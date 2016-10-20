@@ -1,0 +1,18 @@
+{
+  "name": "appops-gui",
+  "version": "1.0.0",
+  "description": "A GUI App to set app permissions.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/cheiron1990/appops",
+  "keywords": [
+    "appops"
+  ],
+  "author": "Cheiron Zhang",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^1.4.1"
+  }
+}
