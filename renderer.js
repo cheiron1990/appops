@@ -18,6 +18,7 @@ function renderApp(app){
 			for (let i = _form.length - 1; i >= 0; i--) {
 				item.removeChild(_form[i]);
 			}
+			item.className = 'app';
 		}else{
 			ipcRenderer.send('getAppPermissions', app.packageName);
 		}
@@ -39,6 +40,7 @@ function renderAppPermissions(packageName, permissions){
 		for (let i = _form.length - 1; i >= 0; i--) {
 			container.removeChild(_form[i]);
 		}
+		container.className = 'app';
 	}
 	let form = document.createElement('form');
 	if(permissions.length > 0){
@@ -107,6 +109,7 @@ function renderAppPermissions(packageName, permissions){
 		form.appendChild(tip);
 	}
 	container.appendChild(form);
+	container.className = 'app open';
 }
 
 ipcRenderer.on('getAppPermissions', function(e, arg){
@@ -128,3 +131,13 @@ ipcRenderer.on('getAppList', function(e, arg){
 
 // init
 ipcRenderer.send('getAppList');
+
+// refresh
+let btnRefresh = document.getElementById('btnRefresh');
+btnRefresh.addEventListener('click', function(e){
+	let contents = document.getElementById('appList').childNodes;
+	for (let i = contents.length - 1; i >= 0; i--) {
+		document.getElementById('appList').removeChild(contents[i]);
+	}
+	ipcRenderer.send('getAppList');
+});
