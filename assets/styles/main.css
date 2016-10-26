@@ -67,6 +67,13 @@ header button{
 	right: 32px;
 
 	cursor: pointer;
+
+	transition: box-shadow 100ms ease-in-out, background-color 200ms ease-in-out;;
+}
+
+header button:hover{
+	background-color: #435053;
+	box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.12), 0px 6px 6px 0px rgba(0,0,0,0.24), 0px 0px 12px 0px rgba(0,0,0,0.12), 0px 12px 12px 0px rgba(0,0,0,0.24);
 }
 
 header form input{

@@ -5,6 +5,9 @@
 const ipcRenderer = require('electron').ipcRenderer;
 
 (() => {
+  // save app item for search
+  let appItems = {}
+  //
   const commonMethod = {
     get: function (url) {
       return new Promise((resolve, reject) => {
@@ -75,6 +78,11 @@ const ipcRenderer = require('electron').ipcRenderer;
         ipcRenderer.send('getAppPermissions', app.packageName)
       }
     })
+    // save to appItems
+    appItems[app.packageName] = {
+      dom: item,
+      label: app.packageName
+    }
     getLabel(app.packageName).then((obj) => {
       // set icon
       icon.style.backgroundColor = 'transparent'
@@ -83,6 +91,8 @@ const ipcRenderer = require('electron').ipcRenderer;
       icon.style.backgroundImage = 'url("' + obj.logo + '")'
       // set label
       btn.innerHTML = obj.label
+      // save to appItems
+      appItems[app.packageName].label = obj.label
     }, (errCode) => {
       console.log(errCode)
     })
@@ -94,6 +104,7 @@ const ipcRenderer = require('electron').ipcRenderer;
     apps.forEach(function (item, index, arr) {
       container.appendChild(renderApp(item))
     })
+    console.log(appItems)
   }
   //
   function renderAppPermissions (packageName, permissions) {
@@ -174,6 +185,22 @@ const ipcRenderer = require('electron').ipcRenderer;
     container.className = 'app open'
   }
   //
+  function search (keyword) {
+    if (keyword) {
+      for (let k in appItems) {
+        if (k.indexOf(keyword) !== -1 || appItems[k].label.indexOf(keyword) !== -1) {
+          appItems[k].dom.style.display = 'block'
+        } else {
+          appItems[k].dom.style.display = 'none'
+        }
+      }
+    } else {
+      for (let k in appItems) {
+        appItems[k].dom.style.display = 'block'
+      }
+    }
+  }
+  //
   ipcRenderer.on('getAppPermissions', (e, arg) => {
     if (arg.code) {
       renderAppPermissions(arg.packageName, arg.permissions)
@@ -205,6 +232,23 @@ const ipcRenderer = require('electron').ipcRenderer;
       document.getElementById('appList').removeChild(contents[i])
     }
     ipcRenderer.send('getAppList')
+  })
+  // search
+  let searchInput = document.getElementById('searchInput')
+  searchInput.addEventListener('change', (e) => {
+    let keyword = e.target.value
+    search(keyword)
+  })
+  searchInput.addEventListener('keyup', (e) => {
+    let keyword = e.target.value
+    search(keyword)
+  })
+  // search input drag set
+  searchInput.addEventListener('focus', (e) => {
+    e.target.style['-webkit-app-region'] = 'no-drag'
+  })
+  searchInput.addEventListener('blur', (e) => {
+    e.target.style['-webkit-app-region'] = 'no-drag'
   })
 })()
 
