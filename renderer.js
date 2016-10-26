@@ -104,7 +104,6 @@ const ipcRenderer = require('electron').ipcRenderer;
     apps.forEach(function (item, index, arr) {
       container.appendChild(renderApp(item))
     })
-    console.log(appItems)
   }
   //
   function renderAppPermissions (packageName, permissions) {
@@ -250,5 +249,43 @@ const ipcRenderer = require('electron').ipcRenderer;
   searchInput.addEventListener('blur', (e) => {
     e.target.style['-webkit-app-region'] = 'no-drag'
   })
+  // scroll
+  ;(() => {
+    let header = document.querySelector('header')
+    let coordinate
+    //
+    function getScrollDirection (pageYOffset) {
+      if (typeof coordinate === 'undefined') {
+        coordinate = pageYOffset
+      }
+      let diff = coordinate - pageYOffset
+      if (diff < 0) {
+        coordinate = pageYOffset
+        return 'down'
+      } else if (diff > 0) {
+        coordinate = pageYOffset
+        return 'up'
+      } else {
+        coordinate = pageYOffset
+        return false
+      }
+    }
+    //
+    function scrollEffect (direction) {
+      switch (direction) {
+        case 'up':
+          header.className = 'show'
+          break
+        case 'down':
+          header.className = 'hide'
+          break
+        default:
+          break
+      }
+    }
+    document.addEventListener('scroll', (e) => {
+      scrollEffect(getScrollDirection(window.pageYOffset))
+    })
+  })()
 })()
 
