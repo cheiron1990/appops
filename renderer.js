@@ -5,8 +5,20 @@
 const ipcRenderer = require('electron').ipcRenderer;
 
 (() => {
-  // save app item for search
-  let appItems = {}
+  // events
+  const customEvents = {
+    loadingstart: new Event('loading-start'),
+    loadingend: new Event('loading-end')
+  }
+  document.addEventListener('loading-start', (e) => {
+    let loading = document.querySelector('.loading')
+    loading.style.display = 'block'
+    loading.className = 'loading loading-start'
+  })
+  document.addEventListener('loading-end', (e) => {
+    let loading = document.querySelector('.loading')
+    loading.className = 'loading loading-end'
+  })
   //
   const commonMethod = {
     get: function (url) {
@@ -24,6 +36,14 @@ const ipcRenderer = require('electron').ipcRenderer;
         xhr.open('get', url, true)
         xhr.send(null)
       })
+    },
+    showLoading: function (msg) {
+      let msgDom = document.querySelector('.loading-msg')
+      msgDom.innerHTML = msg
+      document.dispatchEvent(customEvents.loadingstart)
+    },
+    hideLoading: function () {
+      document.dispatchEvent(customEvents.loadingend)
     }
   }
   //
@@ -76,6 +96,7 @@ const ipcRenderer = require('electron').ipcRenderer;
         item.className = 'app'
       } else {
         ipcRenderer.send('getAppPermissions', app.packageName)
+        commonMethod.showLoading('正在获取App权限列表...')
       }
     })
     // save to appItems
@@ -174,6 +195,7 @@ const ipcRenderer = require('electron').ipcRenderer;
           packageName: packageName,
           permissions: data
         })
+        commonMethod.showLoading('正在设置App权限...')
       })
     } else {
       let tip = document.createElement('p')
@@ -203,8 +225,10 @@ const ipcRenderer = require('electron').ipcRenderer;
   ipcRenderer.on('getAppPermissions', (e, arg) => {
     if (arg.code) {
       renderAppPermissions(arg.packageName, arg.permissions)
+      commonMethod.hideLoading()
     } else {
       console.log(arg.err)
+      commonMethod.hideLoading()
     }
   })
   //
@@ -212,6 +236,7 @@ const ipcRenderer = require('electron').ipcRenderer;
     if (arg.code) {
       document.getElementById('err').style.display = 'none'
       renderAppList(arg.data)
+      commonMethod.hideLoading()
     } else {
       document.getElementById('errStr').innerHTML = arg.errStr
       document.getElementById('errCode').innerHTML = arg.err.code
@@ -219,10 +244,29 @@ const ipcRenderer = require('electron').ipcRenderer;
       document.getElementById('errSignal').innerHTML = arg.err.signal == null ? arg.err.signal : 'null'
       document.getElementById('errKilled').innerHTML = arg.err.killed
       document.getElementById('err').style.display = 'block'
+      commonMethod.hideLoading()
     }
+  })
+  ipcRenderer.on('setAppPermissions', (e, arg) => {
+    commonMethod.hideLoading()
+    let all = true
+    let str = ''
+    for (let k in arg) {
+      if (arg[k].status) {
+        str = str + ' ' + k + ' set successful. \n'
+      } else {
+        all = false
+        str = str + ' ' + k + ' set failed. reason: ' + arg[k].err + '\n'
+      }
+    }
+    if (all) {
+      str = 'all successful.'
+    }
+    window.alert(str)
   })
   // init
   ipcRenderer.send('getAppList')
+  commonMethod.showLoading('正在加载App列表...')
   // refresh
   let btnRefresh = document.getElementById('btnRefresh')
   btnRefresh.addEventListener('click', (e) => {
@@ -231,8 +275,10 @@ const ipcRenderer = require('electron').ipcRenderer;
       document.getElementById('appList').removeChild(contents[i])
     }
     ipcRenderer.send('getAppList')
+    commonMethod.showLoading('正在加载App列表...')
   })
   // search
+  var appItems = {}
   let searchInput = document.getElementById('searchInput')
   searchInput.addEventListener('change', (e) => {
     let keyword = e.target.value

@@ -95,13 +95,46 @@ function setAppPermission (packageName, permission) {
 }
 
 function setAppPermissions (packageName, permissions) {
-  permissions.forEach((item, index, arr) => {
-    setAppPermission(packageName, item).then(() => {
-      console.log('s')
-    }, (err) => {
-      console.log(err)
-    })
+  return new Promise((resolve, reject) => {
+    let result = {}
+    let setPermission = function (packageName, index) {
+      setAppPermission(packageName, permissions[index]).then(() => {
+        if (index < permissions.length - 1) {
+          result[permissions[index].key] = {
+            status: true
+          }
+          setPermission(packageName, index + 1)
+        } else {
+          result[permissions[index].key] = {
+            status: true
+          }
+          resolve(result)
+        }
+      }, (err) => {
+        if (index < permissions.length - 1) {
+          result[permissions[index].key] = {
+            status: false,
+            err: err
+          }
+          setPermission(packageName, index + 1)
+        } else {
+          result[permissions[index].key] = {
+            status: false,
+            err: err
+          }
+          resolve(result)
+        }
+      })
+    }
+    setPermission(packageName, 0)
   })
+  // permissions.forEach((item, index, arr) => {
+  //   setAppPermission(packageName, item).then(() => {
+  //     console.log('s')
+  //   }, (err) => {
+  //     console.log(err)
+  //   })
+  // })
 }
 
 // This method will be called when Electron has finished
@@ -144,7 +177,11 @@ ipcMain.on('getAppPermissions', (e, arg) => {
 })
 
 ipcMain.on('setAppPermissions', (e, arg) => {
-  setAppPermissions(arg.packageName, arg.permissions)
+  setAppPermissions(arg.packageName, arg.permissions).then((result) => {
+    e.sender.send('setAppPermissions', result)
+  }, (result) => {
+    e.sender.send('setAppPermissions', result)
+  })
 })
 
 // Quit when all windows are closed.

@@ -303,6 +303,120 @@ header.show .logo, header.show form input{
 	padding-bottom: 4px;
 }
 
+.loading{
+	background-color: #fafafa;
+
+	box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.22), 0px 24px 24px 0px rgba(0,0,0,0.30);
+	border-radius: 2px;
+
+	width: 380px;
+	height: 100px;
+	margin-left: -190px;
+
+	position: fixed;
+	top: 210px;
+	left: 50%;
+
+	z-index: 2;
+
+	display: none;
+}
+
+.loading.loading-start{
+	-webkit-animation-name:'loading-start';
+	-webkit-animation-duration: 400ms;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-fill-mode: forwards;
+}
+
+.loading.loading-end{
+	-webkit-animation-name:'loading-end';
+	-webkit-animation-duration: 400ms;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-fill-mode: forwards;
+}
+
+.loading .shape{
+	background-color: #93b156;
+
+	width: 48px;
+	height: 48px;
+
+	position: absolute;
+	left: 36px;
+	top: 26px;
+
+	-webkit-animation-name:'loading';
+	-webkit-animation-duration: 3600ms;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-iteration-count: infinite;
+}
+
+.loading .loading-msg{
+	color: #555;
+	font-size: 20px;
+
+	position: absolute;
+	left: 120px;
+	top: 38px;
+}
+
+@keyframes loading{
+	0% {
+		transform: rotate(0);
+		border-radius: 12px;
+		background-color: #8BC34A;
+	}
+	25% {
+		transform: rotate(180deg);
+		border-radius: 24px;
+		background-color: #2196F3;
+	}
+	50% {
+		transform: rotate(360deg);
+		border-radius: 12px;
+		background-color: #9C27B0;
+	}
+	75% {
+		transform: rotate(540deg);
+		border-radius: 24px;
+		background-color: #F44336;
+	}
+	100% {
+		transform: rotate(720deg);
+		border-radius: 12px;
+		background-color: #8BC34A;
+	}
+}
+
+@keyframes loading-start{
+	0% {
+		opacity: 0;
+		box-shadow: 0px 0px 24px 0px rgba(0,0,0,0), 0px 24px 24px 0px rgba(0,0,0,0);
+		display: none;
+	}
+	100% {
+		opacity: 1;
+		box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.22), 0px 24px 24px 0px rgba(0,0,0,0.30);
+		display: block;
+	}
+}
+
+@keyframes loading-end{
+	0% {
+		opacity: 1;
+		box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.22), 0px 24px 24px 0px rgba(0,0,0,0.30);
+		display: block;
+	}
+	100% {
+		opacity: 0;
+		box-shadow: 0px 0px 24px 0px rgba(0,0,0,0), 0px 24px 24px 0px rgba(0,0,0,0);
+		display: none;
+	}
+}
+
 @keyframes header-hide{
 	0% {
 		height: 220px;

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="./assets/styles/main.css">
   </head>
   <body>
+
     <header>
       <div class="logo"> 
         <svg width="101px" height="121px" viewBox="281 208 101 121" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -35,9 +36,9 @@
         <input type="text" name="keyword" placeholder="请输入包名或者app名称" id="searchInput">
       </form>
     </header>
-    <div id="appList">
-      
-    </div>
+
+    <div id="appList"></div>
+
     <div class="err" id="err">
       <div class="err-header">
         <div class="ill">
@@ -58,6 +59,11 @@
         <p><span>signal: </span><span id="errSignal"></span></p>
         <p><span>killed: </span><span id="errKilled"></span></p>
       </div>
+    </div>
+
+    <div class="loading">
+      <div class="shape"></div>
+      <p class="loading-msg">正在加载App列表...</p>
     </div>
   </body>
 
