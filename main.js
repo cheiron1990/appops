@@ -12,6 +12,10 @@ const exec = require('child_process').exec
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+/**
+ * create window
+ * @return {none}
+ */
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -29,13 +33,15 @@ function createWindow () {
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     mainWindow = null
+    app.quit()
   })
 }
 
+/**
+ * get app list
+ * @return {promise} promise with app list
+ */
 function getAppList () {
   return new Promise((resolve, reject) => {
     exec('adb shell pm list packages -3', (err, stdout, stderr) => {
@@ -56,6 +62,11 @@ function getAppList () {
   })
 }
 
+/**
+ * get permissions of one app
+ * @param  {str} packageName
+ * @return {promise} promise with app permissions array
+ */
 function getAppPermissions (packageName) {
   return new Promise((resolve, reject) => {
     exec('adb shell appops get ' + packageName, (err, stdout, stderr) => {
@@ -82,6 +93,14 @@ function getAppPermissions (packageName) {
   })
 }
 
+/**
+ * set one permission
+ * @param {str} packageName
+ * @param {obj} permission  {key: str,
+ *                           value: str
+ *                           }
+ * @return {promise}
+ */
 function setAppPermission (packageName, permission) {
   return new Promise((resolve, reject) => {
     exec('adb shell appops set ' + packageName + ' ' + permission.key + ' ' + permission.value, (err, stdout, stderr) => {
@@ -94,9 +113,20 @@ function setAppPermission (packageName, permission) {
   })
 }
 
+/**
+ * set permissions of one app
+ * @param {str} packageName
+ * @param {array} permissions array, the item is a permission obj, reference to the function setAppPermission
+ */
 function setAppPermissions (packageName, permissions) {
   return new Promise((resolve, reject) => {
+    // obj to store results of each permission setting process
     let result = {}
+    /**
+     * recursion wrap to ensure all permissions set processes to be done.
+     * @param {str} packageName
+     * @param {int} index
+     */
     let setPermission = function (packageName, index) {
       setAppPermission(packageName, permissions[index]).then(() => {
         if (index < permissions.length - 1) {
@@ -126,15 +156,9 @@ function setAppPermissions (packageName, permissions) {
         }
       })
     }
+    // start
     setPermission(packageName, 0)
   })
-  // permissions.forEach((item, index, arr) => {
-  //   setAppPermission(packageName, item).then(() => {
-  //     console.log('s')
-  //   }, (err) => {
-  //     console.log(err)
-  //   })
-  // })
 }
 
 // This method will be called when Electron has finished
@@ -156,7 +180,6 @@ ipcMain.on('getAppList', (e) => {
       errStr: err.toString(),
       err: err
     })
-    console.log(err)
   })
 })
 
@@ -172,7 +195,6 @@ ipcMain.on('getAppPermissions', (e, arg) => {
       code: 0,
       err: err
     })
-    console.log(err)
   })
 })
 
@@ -200,6 +222,3 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
