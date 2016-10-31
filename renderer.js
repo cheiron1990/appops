@@ -19,7 +19,11 @@ const ipcRenderer = require('electron').ipcRenderer;
     let loading = document.querySelector('.loading')
     loading.className = 'loading loading-end'
   })
-  //
+
+  /**
+   * commonMethod
+   * @type {Object}
+   */
   const commonMethod = {
     get: function (url) {
       return new Promise((resolve, reject) => {
@@ -79,7 +83,12 @@ const ipcRenderer = require('electron').ipcRenderer;
       }, 1800)
     }
   }
-  //
+
+  /**
+   * get label and icon from Google Play
+   * @param  {str} packageName
+   * @return {promise} promise with icon and label
+   */
   function getLabel (packageName) {
     return new Promise((resolve, reject) => {
       if (localStorage.getItem(packageName + '_logo') && localStorage.getItem(packageName + '_label')){
@@ -109,7 +118,12 @@ const ipcRenderer = require('electron').ipcRenderer;
       }
     })
   }
-  //
+
+  /**
+   * render app item dom
+   * @param  {obj} app
+   * @return {dom obj} app dom
+   */
   function renderApp (app) {
     let item = document.createElement('div')
     item.className = 'app'
@@ -132,7 +146,7 @@ const ipcRenderer = require('electron').ipcRenderer;
         commonMethod.showLoading('正在获取App权限列表...')
       }
     })
-    // save to appItems
+    // save to appItems for search
     appItems[app.packageName] = {
       dom: item,
       label: app.packageName
@@ -152,14 +166,25 @@ const ipcRenderer = require('electron').ipcRenderer;
     })
     return item
   }
-  //
+
+  /**
+   * render app list dom
+   * @param  {array} app obj array
+   * @return {none}
+   */
   function renderAppList (apps) {
     let container = document.getElementById('appList')
     apps.forEach(function (item, index, arr) {
       container.appendChild(renderApp(item))
     })
   }
-  //
+
+  /**
+   * render app permissions dom
+   * @param  {str} packageName
+   * @param  {array} permissions
+   * @return {none}
+   */
   function renderAppPermissions (packageName, permissions) {
     let container = document.getElementById(packageName)
     let _form = container.getElementsByTagName('form')
@@ -238,7 +263,12 @@ const ipcRenderer = require('electron').ipcRenderer;
     container.appendChild(form)
     container.className = 'app open'
   }
-  //
+
+  /**
+   * search
+   * @param  {str} keyword
+   * @return {none}
+   */
   function search (keyword) {
     if (keyword) {
       for (let k in appItems) {
@@ -254,7 +284,7 @@ const ipcRenderer = require('electron').ipcRenderer;
       }
     }
   }
-  //
+
   ipcRenderer.on('getAppPermissions', (e, arg) => {
     if (arg.code) {
       renderAppPermissions(arg.packageName, arg.permissions)
@@ -264,7 +294,7 @@ const ipcRenderer = require('electron').ipcRenderer;
       commonMethod.hideLoading()
     }
   })
-  //
+
   ipcRenderer.on('getAppList', (e, arg) => {
     if (arg.code) {
       document.getElementById('err').style.display = 'none'
@@ -280,6 +310,7 @@ const ipcRenderer = require('electron').ipcRenderer;
       commonMethod.hideLoading()
     }
   })
+
   ipcRenderer.on('setAppPermissions', (e, arg) => {
     commonMethod.hideLoading()
     let all = true
@@ -299,9 +330,11 @@ const ipcRenderer = require('electron').ipcRenderer;
       commonMethod.notify('error', content)
     }
   })
+
   // init
   ipcRenderer.send('getAppList')
   commonMethod.showLoading('正在加载App列表...')
+
   // refresh
   let btnRefresh = document.getElementById('btnRefresh')
   btnRefresh.addEventListener('click', (e) => {
@@ -312,6 +345,7 @@ const ipcRenderer = require('electron').ipcRenderer;
     ipcRenderer.send('getAppList')
     commonMethod.showLoading('正在加载App列表...')
   })
+
   // search
   var appItems = {}
   let searchInput = document.getElementById('searchInput')
@@ -323,6 +357,7 @@ const ipcRenderer = require('electron').ipcRenderer;
     let keyword = e.target.value
     search(keyword)
   })
+
   // search input drag set
   searchInput.addEventListener('focus', (e) => {
     e.target.style['-webkit-app-region'] = 'no-drag'
@@ -330,6 +365,7 @@ const ipcRenderer = require('electron').ipcRenderer;
   searchInput.addEventListener('blur', (e) => {
     e.target.style['-webkit-app-region'] = 'no-drag'
   })
+
   // scroll
   ;(() => {
     let header = document.querySelector('header')
