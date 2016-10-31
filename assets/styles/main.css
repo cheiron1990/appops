@@ -370,23 +370,94 @@ header.show .logo, header.show form input{
 	border-radius: 2px;
 
 	width: 380px;
-	height: 72px;
+	height: auto;
+	min-height: 140px;
 
 	position: fixed;
-	top: 24px;
-	right: 24px;
+	bottom: 0px;
+	left: 50%;
 
-	z-index: 3;
+	transform: translate(-50%, 0);
+}
+
+.notify-enter{
+	-webkit-animation-name:'notify-show';
+	-webkit-animation-duration: 300ms;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-fill-mode: forwards;
+}
+
+.notify-hide{
+	-webkit-animation-name:'notify-hide';
+	-webkit-animation-duration: 300ms;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-fill-mode: forwards;
 }
 
 .notify .title{
-	color: #fff;
+	width: 100%;
+	height: 56px;
 
-	background-color: #8BC34A;
-
-	width: 72px;
-	height: 72px;
+	overflow: hidden;
 }
+
+.notify .title-success{
+	background-color: #8BC34A;
+}
+
+.notify .title-error{
+	background-color: #F44336;
+}
+
+.notify .title .icon{
+	background-color: rgba(0, 0, 0, 0.12);
+
+	float: left;
+}
+
+.notify .title .icon-success{
+	padding: 12px 6px 8px 8px;
+}
+
+.notify .title .icon-error{
+	padding: 12px 10px 8px 11px;
+}
+
+.notify .title .text{
+	color: #fff;
+	font-size: 20px;
+	line-height: 56px;
+	padding-left: 72px;
+}
+
+.notify.success .title-success{
+	display: block;
+}
+.notify.success .title-error{
+	display: none;
+}
+
+.notify.error .title-success{
+	display: none;
+}
+.notify.error .title-error{
+	display: block;
+}
+
+.notify .content ul{
+	margin: 18px 18px 18px 60px;
+}
+
+.notify .content ul li{
+	color: #444;
+	font-size: 14px;
+	line-height: 24px;
+
+	margin: 4px 0;
+}
+
 
 @keyframes header-hide{
 	0% {
@@ -528,6 +599,28 @@ header.show .logo, header.show form input{
 	100% {
 		opacity: 0;
 		box-shadow: 0px 0px 24px 0px rgba(0,0,0,0), 0px 24px 24px 0px rgba(0,0,0,0);
+		display: none;
+	}
+}
+
+@keyframes notify-show{
+	0%{
+		transform: translate(-50%, 140px);
+	}
+	100%{
+		transform: translate(-50%, 0);
+	}
+}
+
+@keyframes notify-hide{
+	0%{
+		transform: translate(-50%, 0);
+		opacity: 1;
+		display: block;
+	}
+	100%{
+		transform: translate(-50%, 140px);
+		opacity: 0;
 		display: none;
 	}
 }

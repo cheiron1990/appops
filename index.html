@@ -66,9 +66,64 @@
       <p class="loading-msg">正在加载App列表...</p>
     </div>
 
-    <div class="notify">
-      <div class="title">
-        成功
+    <div class="notify notify-hide success" id="notify">
+      <div class="title title-success">
+        <div class="icon icon-success">
+          <svg width="47px" height="39px" viewBox="9 21 47 39" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <desc>Created with Sketch.</desc>
+              <defs>
+                  <polygon id="path-1" points="27.863961 41.9852814 19.8284271 33.9497475 17 36.7781746 26.8994949 46.6776695 26.9142136 46.6629509 27.8786797 47.627417 47.6776695 27.8284271 44.8492424 25"></polygon>
+                  <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+                      <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+                      <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+                      <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.24 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+                      <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+                      <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+                      <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.12 0" type="matrix" in="shadowBlurOuter2" result="shadowMatrixOuter2"></feColorMatrix>
+                      <feMerge>
+                          <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                          <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                      </feMerge>
+                  </filter>
+              </defs>
+              <g id="Combined-Shape" stroke="none" fill="none">
+                  <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                  <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+              </g>
+          </svg>
+        </div>
+        <div class="text">成功</div>
+      </div>
+      <div class="title title-error">
+        <div class="icon icon-error">
+          <svg width="40px" height="40px" viewBox="12 20 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+              <desc>Created with Sketch.</desc>
+              <defs>
+                  <polygon id="path-2" points="34.8284271 36 43.3137085 27.5147186 40.4852814 24.6862915 32 33.1715729 23.5147186 24.6862915 20.6862915 27.5147186 29.1715729 36 20.6862915 44.4852814 23.5147186 47.3137085 32 38.8284271 40.4852814 47.3137085 43.3137085 44.4852814"></polygon>
+                  <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+                      <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+                      <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+                      <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.24 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+                      <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+                      <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+                      <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.12 0" type="matrix" in="shadowBlurOuter2" result="shadowMatrixOuter2"></feColorMatrix>
+                      <feMerge>
+                          <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                          <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                      </feMerge>
+                  </filter>
+              </defs>
+              <g id="Combined-Shape2" stroke="none" fill="none">
+                  <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-2"></use>
+                  <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-2"></use>
+              </g>
+          </svg>
+        </div>
+        <div class="text">出错了！</div>
+      </div>
+      <div class="content">
+        <ul id="notifyContent"></ul>
       </div>
     </div>
   </body>

@@ -44,6 +44,39 @@ const ipcRenderer = require('electron').ipcRenderer;
     },
     hideLoading: function () {
       document.dispatchEvent(customEvents.loadingend)
+    },
+    notify: function (type, content) {
+      let dom = document.getElementById('notify')
+      switch (type) {
+        case 'success':
+          dom.className = 'notify success notify-enter'
+          break
+        case 'error':
+          dom.className = 'notify error notify-enter'
+          break
+      }
+      let contentContainer = document.getElementById('notifyContent')
+      console.log(contentContainer.childNodes[0])
+      if (contentContainer.childNodes.length > 0) {
+        for (let i = 0; i < contentContainer.childNodes.length; i++) {
+          contentContainer.removeChild(contentContainer.childNodes[i])
+        }
+      }
+      content.forEach((item, index, arr) => {
+        let li = document.createElement('li')
+        li.innerHTML = item
+        contentContainer.appendChild(li)
+      })
+      setTimeout(() => {
+        switch (type) {
+          case 'success':
+            dom.className = 'notify success notify-hide'
+            break
+          case 'error':
+            dom.className = 'notify error notify-hide'
+            break
+        }
+      }, 1800)
     }
   }
   //
@@ -250,19 +283,21 @@ const ipcRenderer = require('electron').ipcRenderer;
   ipcRenderer.on('setAppPermissions', (e, arg) => {
     commonMethod.hideLoading()
     let all = true
-    let str = ''
+    let content = []
     for (let k in arg) {
       if (arg[k].status) {
-        str = str + ' ' + k + ' set successful. \n'
+        content.push(k + ' 设置成功。')
       } else {
         all = false
-        str = str + ' ' + k + ' set failed. reason: ' + arg[k].err + '\n'
+        content.push(k + ' 设置失败。原因：' + arg[k].err)
       }
     }
     if (all) {
-      str = 'all successful.'
+      content = ['全部权限都已设置成功。']
+      commonMethod.notify('success', content)
+    } else {
+      commonMethod.notify('error', content)
     }
-    window.alert(str)
   })
   // init
   ipcRenderer.send('getAppList')
@@ -308,7 +343,7 @@ const ipcRenderer = require('electron').ipcRenderer;
       if (diff < 0) {
         coordinate = pageYOffset
         return 'down'
-      } else if (diff > 0) {
+      } else if (diff > 44) {
         coordinate = pageYOffset
         return 'up'
       } else {
