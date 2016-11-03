@@ -68,7 +68,9 @@ header button{
 
 	cursor: pointer;
 
-	transition: box-shadow 100ms ease-in-out, background-color 200ms ease-in-out;;
+	transition: box-shadow 100ms ease-in-out, background-color 200ms ease-in-out;
+
+	-webkit-app-region: no-drag;
 }
 
 header button:hover{
