@@ -22,6 +22,7 @@ function createWindow () {
     width: 800,
     height: 600,
     title: 'Appops',
+    autoHideMenuBar: true,
     titleBarStyle: 'hidden-inset'
   })
 
