@@ -89,7 +89,10 @@ const ipcRenderer = require('electron').ipcRenderer;
    * @param  {str} packageName
    * @return {promise} promise with icon and label
    */
-  function getLabel (packageName) {
+  function getLabel (packageName, item) {
+    let loadingTip = document.createElement('div')
+    loadingTip.className = 'label-loading'
+    item.appendChild(loadingTip)
     return new Promise((resolve, reject) => {
       if (localStorage.getItem(packageName + '_logo') && localStorage.getItem(packageName + '_label')){
         let logo = localStorage.getItem(packageName + '_logo')
@@ -98,6 +101,7 @@ const ipcRenderer = require('electron').ipcRenderer;
           logo: logo,
           label: label
         })
+        item.removeChild(loadingTip)
       } else {
         commonMethod.get('https://play.google.com/store/apps/details?id=' + packageName).then((xhr) => {
           let htmlStr = xhr.response
@@ -112,8 +116,10 @@ const ipcRenderer = require('electron').ipcRenderer;
             logo: logo,
             label: label
           })
+          item.removeChild(loadingTip)
         }, (xhr) => {
           reject(xhr.status)
+          item.removeChild(loadingTip)
         })
       }
     })
@@ -151,7 +157,7 @@ const ipcRenderer = require('electron').ipcRenderer;
       dom: item,
       label: app.packageName
     }
-    getLabel(app.packageName).then((obj) => {
+    getLabel(app.packageName, item).then((obj) => {
       // set icon
       icon.style.backgroundColor = 'transparent'
       icon.style.borderRadius = '0'
@@ -379,7 +385,7 @@ const ipcRenderer = require('electron').ipcRenderer;
       if (diff < 0) {
         coordinate = pageYOffset
         return 'down'
-      } else if (diff > 44) {
+      } else if (pageYOffset < 200 || diff > 44) {
         coordinate = pageYOffset
         return 'up'
       } else {

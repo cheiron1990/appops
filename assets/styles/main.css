@@ -97,7 +97,7 @@ header form input{
 	left: 72px;
 
 	-webkit-app-region: no-drag;
-	-webkit-user-select: text;
+	-webkit-user-select: none;
 }
 
 header.hide{
@@ -190,6 +190,24 @@ header.show .logo, header.show form input{
 	display: block;
 	width: 100%;
 	cursor: pointer;
+
+	-webkit-user-select: none;
+}
+
+.app .label-loading{
+	background-color: #93b156;
+
+	width: 20px;
+	height: 20px;
+
+	position: absolute;
+	top: 18px;
+	right: 16px;
+
+	-webkit-animation-name:'label-loading';
+	-webkit-animation-duration: 3600ms;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-iteration-count: infinite;
 }
 
 .app form{
@@ -211,6 +229,8 @@ header.show .logo, header.show form input{
 	color: #333;
 	font-size: 14px;
 	line-height: 48px;
+
+	-webkit-user-select: none;
 }
 .app form ul li select{
 	-webkit-appearance: none;
@@ -248,6 +268,8 @@ header.show .logo, header.show form input{
 	height: 34px;
 
 	transition: background-color 100ms ease-in-out, box-shadow 300ms ease-in-out;
+
+	-webkit-user-select: none;
 }
 
 .app form button[type="submit"]:hover{
@@ -574,6 +596,34 @@ header.show .logo, header.show form input{
 	100% {
 		transform: rotate(720deg);
 		border-radius: 12px;
+		background-color: #8BC34A;
+	}
+}
+
+@keyframes label-loading{
+	0% {
+		transform: rotate(0);
+		border-radius: 5px;
+		background-color: #8BC34A;
+	}
+	25% {
+		transform: rotate(180deg);
+		border-radius: 10px;
+		background-color: #2196F3;
+	}
+	50% {
+		transform: rotate(360deg);
+		border-radius: 5px;
+		background-color: #9C27B0;
+	}
+	75% {
+		transform: rotate(540deg);
+		border-radius: 10px;
+		background-color: #F44336;
+	}
+	100% {
+		transform: rotate(720deg);
+		border-radius: 5px;
 		background-color: #8BC34A;
 	}
 }
