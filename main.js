@@ -3,6 +3,8 @@ const electron = require('electron')
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
+// Module to create menu
+const Menu = electron.Menu
 // Data share
 const ipcMain = require('electron').ipcMain
 // Module to exec shell command
@@ -21,11 +23,73 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    title: 'Appops',
+    title: 'APPOPS',
     autoHideMenuBar: true,
     frame: false,
     titleBarStyle: 'hidden-inset'
   })
+
+  let name = app.getName()
+
+  var template = [
+    {
+      label: name,
+      submenu: [
+        {
+          label: 'About ' + name,
+          role: 'about'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          label: 'Hide ' + name,
+          accelerator: 'Command+H',
+          role: 'hide'
+        },
+        {
+          label: 'Hide Others',
+          accelerator: 'Command+Alt+H',
+          role: 'hideothers'
+        },
+        {
+          label: 'Show All',
+          role: 'unhide'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          label: 'Quit',
+          accelerator: 'Command+Q',
+          click: function () { app.quit() }
+        }
+      ]
+    },
+    {
+      label: 'Window',
+      role: 'window',
+      submenu: [
+        {
+          label: 'Bring All to Front',
+          role: 'front'
+        }
+      ]
+    },
+    {
+      label: 'Help',
+      role: 'help',
+      submenu: [
+        {
+          label: 'APPOPS Help',
+          click: function () { require('electron').shell.openExternal('https://github.com/cheiron1990/appops') }
+        }
+      ]
+    }
+  ]
+
+  var menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`)

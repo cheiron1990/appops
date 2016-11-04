@@ -1,5 +1,5 @@
 {
-  "name": "appops-gui",
+  "name": "APPOPS",
   "version": "1.0.0",
   "description": "A GUI App to set app permissions.",
   "main": "main.js",
