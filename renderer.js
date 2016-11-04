@@ -428,8 +428,9 @@ const ipcRenderer = require('electron').ipcRenderer;
           break
       }
     }
-    document.addEventListener('scroll', (e) => {
-      scrollEffect(getScrollDirection(window.pageYOffset))
+    let container = document.getElementById('appListWrap')
+    container.addEventListener('scroll', (e) => {
+      scrollEffect(getScrollDirection(e.target.scrollTop))
     })
   })()
 })()

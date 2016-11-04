@@ -32,6 +32,8 @@ header .logo{
 	position: absolute;
 	top: 64px;
 	right: 48px;
+
+	-webkit-user-select: none;
 }
 
 header h1{
@@ -44,6 +46,8 @@ header h1{
 	position: absolute;
 	top: 72px;
 	left: 72px;
+
+	-webkit-user-select: none;
 }
 
 header button#btnRefresh{
@@ -71,6 +75,7 @@ header button#btnRefresh{
 	transition: box-shadow 100ms ease-in-out, background-color 200ms ease-in-out;
 
 	-webkit-app-region: no-drag;
+	-webkit-user-select: none;
 }
 
 header button#btnRefresh:hover{
@@ -180,6 +185,16 @@ header.show .logo, header.show form input{
 	-webkit-animation-timing-function: ease-in-out;
 	-webkit-animation-iteration-count: 1;
 	-webkit-animation-fill-mode: forwards;
+}
+
+#appListWrap{
+	width: 100%;
+	height: 100%;
+
+	position: fixed;
+	top: 0;
+
+	overflow: scroll;
 }
 
 #appList{
