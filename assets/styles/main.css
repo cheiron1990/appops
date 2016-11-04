@@ -327,7 +327,8 @@ header.show .logo, header.show form input{
 }
 
 .err{
-	padding: 0px 72px;
+	margin-top: 220px;
+	padding: 28px 72px;
 	display: none;
 }
 
