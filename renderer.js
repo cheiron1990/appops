@@ -5,6 +5,28 @@
 const ipcRenderer = require('electron').ipcRenderer;
 
 (() => {
+  // if not macOS display windowControls
+  const platform = process.platform
+  if (platform !== 'darwin') {
+    let windowControl = document.getElementById('windowControl')
+    windowControl.style.display = 'block'
+    let btnMini = document.getElementById('windowMini')
+    let btnFullscreen = document.getElementById('windowFullscreen')
+    let btnClose = document.getElementById('windowClose')
+    btnMini.addEventListener('click', (e) => {
+      e.preventDefault()
+      ipcRenderer.send('window-minimize')
+    })
+    btnFullscreen.addEventListener('click', (e) => {
+      e.preventDefault()
+      ipcRenderer.send('window-maximize')
+    })
+    btnClose.addEventListener('click', (e) => {
+      e.preventDefault()
+      ipcRenderer.send('window-close')
+    })
+  }
+
   // events
   const customEvents = {
     loadingstart: new Event('loading-start'),

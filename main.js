@@ -168,6 +168,25 @@ function setAppPermissions (packageName, permissions) {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow()
+  // window Control
+  ipcMain.on('window-minimize', () => {
+    mainWindow.minimize()
+  })
+  let windowBounds = mainWindow.getBounds()
+  let fullscreenStatus = false
+  ipcMain.on('window-maximize', () => {
+    if (fullscreenStatus) {
+      mainWindow.setBounds(windowBounds, true)
+      fullscreenStatus = false
+    } else {
+      windowBounds = mainWindow.getBounds()
+      mainWindow.maximize()
+      fullscreenStatus = true
+    }
+  })
+  ipcMain.on('window-close', () => {
+    mainWindow.close()
+  })
 })
 
 ipcMain.on('getAppList', (e) => {
