@@ -14,6 +14,12 @@ const exec = require('child_process').exec
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+// set path
+var isWin = /^win/.test(process.platform)
+if (!isWin) {
+  process.env.PATH = process.env.PATH + ':/usr/local/bin'
+}
+
 /**
  * create window
  * @return {none}

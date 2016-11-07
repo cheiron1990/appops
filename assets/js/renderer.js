@@ -404,10 +404,10 @@ const ipcRenderer = require('electron').ipcRenderer;
         coordinate = pageYOffset
       }
       let diff = coordinate - pageYOffset
-      if (diff < 0) {
+      if (pageYOffset > 200 && diff < 0) {
         coordinate = pageYOffset
         return 'down'
-      } else if (pageYOffset < 200 || diff > 44) {
+      } else if ((diff > 0 && pageYOffset < 200) || diff > 44) {
         coordinate = pageYOffset
         return 'up'
       } else {

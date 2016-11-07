@@ -4,7 +4,8 @@
   "description": "A GUI App to set app permissions.",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "buildmac": "build_scripts/build_mac.sh"
   },
   "repository": "https://github.com/cheiron1990/appops",
   "keywords": [
