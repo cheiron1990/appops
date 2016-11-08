@@ -192,14 +192,14 @@ header.show .logo, header.show form input{
 	height: 100%;
 
 	position: fixed;
-	top: 0;
+	top: 37px;
 	
 	overflow-x: hidden; 
 	overflow-y: auto;
 }
 
 #appList{
-	margin-top: 220px;
+	margin-top: 183px;
 	padding: 20px;
 }
 
